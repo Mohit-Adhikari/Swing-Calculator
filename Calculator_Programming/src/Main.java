@@ -31,7 +31,7 @@ public class Main {
         trigonometry.setLayout(new GridLayout(4,3));
         trigonometry.setPreferredSize(new Dimension(250,250));
         trigonometry.setBackground(Color.black);
-        String trig[]={"sin","cos","tan","+","-","*","/","^","sqrt","x100","Del","AC"};
+        String trig[]={"sin","cos","tan","+","-","*","/","^","sqrt","(",")","AC"};
         for(int i=0;i<12;i++)
         {
             add_button(trigonometry,trig[i]);
@@ -69,7 +69,7 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
                 String x=display.getText();
                 System.out.println(x);
-                display.setText(display.getText()+" " + printable);
+                display.setText(display.getText()+"" + printable);
                 if(printable.equals("=")==true)
                 {
                     Functions.getResult(display.getText());

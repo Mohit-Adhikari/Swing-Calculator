@@ -1,13 +1,30 @@
 import java.util.Stack;
 
 public class Functions {
-    static int evaluateInfix(String infix) {
+    static double evaluateInfix(String infix) {
         Stack<Character> operators = new Stack<>();
-        Stack<Integer> operands = new Stack<>();
+        Stack<Double> operands = new Stack<>();
 
-        for (char c : infix.toCharArray()) {
+        for (int i = 0; i < infix.length(); i++) {
+            char c = infix.charAt(i);
+
+            // Print debug information
+            System.out.println("Current Char: " + c);
+            System.out.println("Operators Stack: " + operators);
+            System.out.println("Operands Stack: " + operands);
+
             if (Character.isDigit(c)) {
-                operands.push(c - '0'); // Convert char to int
+                operands.push((double) (c - '0')); // Convert char to double
+            } else if (Character.isLetter(c)) {
+                // Handle other functions (exp, sqrt) - you can add more as needed
+                String function = readFunction(infix, i);
+                double argument = operands.pop();
+                double result = evaluateFunction(function, argument);
+                operands.push(result);
+
+                // Update the index to skip the function name in the next iteration
+                i += function.length() - 1;
+                continue;
             } else if (c == '(') {
                 operators.push(c);
             } else if (c == ')') {
@@ -29,14 +46,36 @@ public class Functions {
 
         return operands.pop();
     }
-    static void processOperation(Stack<Character> operators, Stack<Integer> operands) {
+
+    static void processOperation(Stack<Character> operators, Stack<Double> operands) {
+        System.out.println("Processing Operation");
+        System.out.println("Operators Stack: " + operators);
+        System.out.println("Operands Stack: " + operands);
+
         char operator = operators.pop();
-        int operand2 = operands.pop();
-        int operand1 = operands.pop();
-        int result = performOperation(operator, operand1, operand2);
+        if (operator == '(') {
+            return;
+        }
+
+        if (operands.isEmpty()) {
+            throw new IllegalArgumentException("Not enough operands for operator: " + operator);
+        }
+
+        double operand2 = operands.pop();
+        if (operands.isEmpty()) {
+            throw new IllegalArgumentException("Not enough operands for operator: " + operator);
+        }
+
+        double operand1 = operands.pop();
+        double result = performOperation(operator, operand1, operand2);
         operands.push(result);
+
+        System.out.println("After Processing Operation");
+        System.out.println("Operators Stack: " + operators);
+        System.out.println("Operands Stack: " + operands);
     }
-    static int performOperation(char operator, int operand1, int operand2) {
+
+    static double performOperation(char operator, double operand1, double operand2) {
         switch (operator) {
             case '+':
                 return operand1 + operand2;
@@ -46,12 +85,27 @@ public class Functions {
                 return operand1 * operand2;
             case '/':
                 return operand1 / operand2;
+            case '^':
+                return Math.pow(operand1, operand2);
             default:
                 throw new IllegalArgumentException("Invalid operator: " + operator);
         }
     }
+
+    static double evaluateFunction(String function, double argument) {
+        switch (function.toLowerCase()) {
+            case "exp":
+                return Math.exp(argument);
+            case "sqrt":
+                return Math.sqrt(argument);
+            // You can add more functions here as needed
+            default:
+                throw new IllegalArgumentException("Invalid function: " + function);
+        }
+    }
+
     static boolean isOperator(char c) {
-        return c == '+' || c == '-' || c == '*' || c == '/';
+        return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
     }
 
     static int precedence(char operator) {
@@ -62,16 +116,27 @@ public class Functions {
             case '*':
             case '/':
                 return 2;
+            case '^':
+                return 3;
             default:
                 return -1;
         }
     }
-    public static void getResult(String infixExpression)
-    {
-        int result = evaluateInfix(infixExpression);
+
+    static String readFunction(String infix, int startIndex) {
+        StringBuilder function = new StringBuilder();
+        int index = startIndex;
+        while (index < infix.length() && Character.isLetter(infix.charAt(index))) {
+            function.append(infix.charAt(index));
+            index++;
+        }
+        return function.toString();
+    }
+
+    public static void getResult(String infixExpression) {
+        double result = evaluateInfix(infixExpression);
 
         System.out.println("Infix Expression: " + infixExpression);
         System.out.println("Result after evaluation: " + result);
     }
-
 }
