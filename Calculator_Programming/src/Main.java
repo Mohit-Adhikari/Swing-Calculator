@@ -40,10 +40,13 @@ public class Main {
 
         JPanel screen=new JPanel();
         //screen.setLayout(new FlowLayout());
-        screen.setPreferredSize(new Dimension(450,150));
+        screen.setPreferredSize(new Dimension(450,100));
         screen.setBackground(Color.blue);
         display=new JTextField();
-        display.setSize(new Dimension(450,150));
+        display.setBackground(Color.BLUE);
+        display.setPreferredSize(new Dimension(450,100));
+        Font text=new Font("Ariel",Font.PLAIN,20);
+        display.setFont(text);
         screen.add(display);
 
 
@@ -64,7 +67,9 @@ public class Main {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                display.setText(printable);
+                String x=display.getText();
+                System.out.println(x);
+                display.setText(display.getText()+" " + printable);
 
             }
         });
