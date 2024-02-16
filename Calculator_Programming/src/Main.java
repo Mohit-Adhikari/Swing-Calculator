@@ -1,6 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 public class Main {
+    public static JTextField display;
+
     public static void main(String[] args) {
 
         JFrame frame=new JFrame("Calculator");
@@ -30,7 +35,16 @@ public class Main {
         for(int i=0;i<12;i++)
         {
             add_button(trigonometry,trig[i]);
+
         }
+
+        JPanel screen=new JPanel();
+        //screen.setLayout(new FlowLayout());
+        screen.setPreferredSize(new Dimension(450,150));
+        screen.setBackground(Color.blue);
+        display=new JTextField();
+        display.setSize(new Dimension(450,150));
+        screen.add(display);
 
 
 
@@ -38,6 +52,7 @@ public class Main {
     clickables.add(numbers,BorderLayout.EAST);
     clickables.add(trigonometry,BorderLayout.WEST);
     frame.add(clickables,BorderLayout.SOUTH);
+    frame.add(screen,BorderLayout.NORTH);
     frame.setVisible(true);
     }
     public static void add_button(JPanel panel,String printable)
@@ -46,6 +61,15 @@ public class Main {
         Font buttonfont=new Font("Ariel",Font.PLAIN,20);
         button.setFont(buttonfont);
         panel.add(button);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                display.setText(printable);
+
+            }
+        });
+
+
 
     }
 }
