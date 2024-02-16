@@ -70,6 +70,13 @@ public class Main {
                 String x=display.getText();
                 System.out.println(x);
                 display.setText(display.getText()+" " + printable);
+                if(printable.equals("=")==true)
+                {
+                    Functions.getResult(display.getText());
+                } else if (printable.equals("AC")==true) {
+                    display.setText(" ");
+
+                }
 
             }
         });
