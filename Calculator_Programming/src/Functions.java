@@ -16,7 +16,7 @@ public class Functions {
             if (Character.isDigit(c)) {
                 operands.push((double) (c - '0')); // Convert char to double
             } else if (Character.isLetter(c)) {
-                // Handle other functions (exp, sqrt) - you can add more as needed
+                // Handle functions (exp, sqrt, sin, cos, tan)
                 String function = readFunction(infix, i);
                 double argument = operands.pop();
                 double result = evaluateFunction(function, argument);
@@ -98,6 +98,12 @@ public class Functions {
                 return Math.exp(argument);
             case "sqrt":
                 return Math.sqrt(argument);
+            case "sin":
+                return Math.sin(toRadians(argument));
+            case "cos":
+                return Math.cos(toRadians(argument));
+            case "tan":
+                return Math.tan(toRadians(argument));
             // You can add more functions here as needed
             default:
                 throw new IllegalArgumentException("Invalid function: " + function);
@@ -131,6 +137,14 @@ public class Functions {
             index++;
         }
         return function.toString();
+    }
+
+    static double toRadians(double degrees) {
+        return Math.toRadians(degrees);
+    }
+
+    static double toDegrees(double radians) {
+        return Math.toDegrees(radians);
     }
 
     public static void getResult(String infixExpression) {

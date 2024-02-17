@@ -76,7 +76,12 @@ public class Main {
                 } else if (printable.equals("AC")==true) {
                     display.setText(" ");
 
+                } else if (printable.equals("sin")) {
+                    String temp= display.getText();
+                    
+
                 }
+
 
             }
         });
