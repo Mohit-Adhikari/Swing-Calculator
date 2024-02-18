@@ -15,7 +15,14 @@ public class Functions {
             System.out.println("Operands Stack: " + operands);
 
             if (Character.isDigit(c)) {
-                operands.push((double) (c - '0')); // Convert char to double
+                StringBuilder number = new StringBuilder();
+                while (i < infix.length() && (Character.isDigit(infix.charAt(i)) || infix.charAt(i) == '.')) {
+                    number.append(infix.charAt(i));
+                    i++;
+                }
+                operands.push(Double.parseDouble(number.toString()));
+                i--; // Adjust the index since it was incremented after the loop// Convert char to double
+
             } else if (Character.isLetter(c)) {
                 // Handle functions (exp, sqrt, sin, cos, tan)
                 String function = readFunction(infix, i);
@@ -34,31 +41,30 @@ public class Functions {
 
                 // Update the index to skip the function name in the next iteration
                 i += function.length() - 1;
-                continue;
+
             } else if (c == '(') {
                 operators.push(c);
-                continue;
+
             } else if (c == ')') {
+                if (flag==true)
+                {
+                    double argument = operands.pop();
+                    double result = evaluateFunction(fun, argument);
+                    operands.push(result);
+                }
                 while (!operators.isEmpty() && operators.peek() != '(') {
                     processOperation(operators, operands);
 
                 }
                 operators.pop();
-                continue;// Pop the '('
+
             } else if (isOperator(c)) {
                 while (!operators.isEmpty() && precedence(c) <= precedence(operators.peek())) {
                     processOperation(operators, operands);
                 }
                 operators.push(c);
             }
-            if (flag==true)
-            {
-                double argument = operands.pop();
-                double result = evaluateFunction(fun, argument);
-                operands.push(result);
 
-
-            }
         }
 
         while (!operators.isEmpty()) {
