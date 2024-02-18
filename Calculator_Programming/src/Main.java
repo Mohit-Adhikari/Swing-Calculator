@@ -52,11 +52,11 @@ public class Main {
 
 
 
-    clickables.add(numbers,BorderLayout.EAST);
-    clickables.add(trigonometry,BorderLayout.WEST);
-    frame.add(clickables,BorderLayout.SOUTH);
-    frame.add(screen,BorderLayout.NORTH);
-    frame.setVisible(true);
+        clickables.add(numbers,BorderLayout.EAST);
+        clickables.add(trigonometry,BorderLayout.WEST);
+        frame.add(clickables,BorderLayout.SOUTH);
+        frame.add(screen,BorderLayout.NORTH);
+        frame.setVisible(true);
     }
     public static void add_button(JPanel panel,String printable)
     {
@@ -69,19 +69,18 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
                 String x=display.getText();
                 System.out.println(x);
-                display.setText(display.getText()+"" + printable);
+                if(printable.equals("=")==false)
+                {
+                    display.setText(display.getText()+"" + printable);
+                }
+
                 if(printable.equals("=")==true)
                 {
                     Functions.getResult(display.getText());
                 } else if (printable.equals("AC")==true) {
                     display.setText(" ");
 
-                } else if (printable.equals("sin")) {
-                    String temp= display.getText();
-                    
-
                 }
-
 
             }
         });

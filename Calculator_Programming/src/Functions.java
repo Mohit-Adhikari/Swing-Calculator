@@ -4,7 +4,8 @@ public class Functions {
     static double evaluateInfix(String infix) {
         Stack<Character> operators = new Stack<>();
         Stack<Double> operands = new Stack<>();
-
+        boolean flag=false;
+        String fun = null;
         for (int i = 0; i < infix.length(); i++) {
             char c = infix.charAt(i);
 
@@ -18,6 +19,15 @@ public class Functions {
             } else if (Character.isLetter(c)) {
                 // Handle functions (exp, sqrt, sin, cos, tan)
                 String function = readFunction(infix, i);
+                //System.out.println("HIII="+function);
+                if (function.equals("sin")==true)
+                {
+                    //operands.push((double) (9));
+                    flag=true;
+                    fun=function;
+                    i += function.length() - 1;
+                    continue;
+                }
                 double argument = operands.pop();
                 double result = evaluateFunction(function, argument);
                 operands.push(result);
@@ -37,6 +47,15 @@ public class Functions {
                     processOperation(operators, operands);
                 }
                 operators.push(c);
+            }
+            if (flag==true)
+            {
+                double argument = operands.pop();
+                double result = evaluateFunction(fun, argument);
+                operands.push(result);
+
+                // Update the index to skip the function name in the next iteration
+
             }
         }
 
