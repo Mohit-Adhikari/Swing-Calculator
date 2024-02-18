@@ -20,7 +20,7 @@ public class Functions {
                 // Handle functions (exp, sqrt, sin, cos, tan)
                 String function = readFunction(infix, i);
                 //System.out.println("HIII="+function);
-                if (function.equals("sin")==true)
+                if (function.equals("sin")==true||function.equals("cos")==true||function.equals("tan")==true)
                 {
                     //operands.push((double) (9));
                     flag=true;
@@ -37,11 +37,14 @@ public class Functions {
                 continue;
             } else if (c == '(') {
                 operators.push(c);
+                continue;
             } else if (c == ')') {
                 while (!operators.isEmpty() && operators.peek() != '(') {
                     processOperation(operators, operands);
+
                 }
-                operators.pop(); // Pop the '('
+                operators.pop();
+                continue;// Pop the '('
             } else if (isOperator(c)) {
                 while (!operators.isEmpty() && precedence(c) <= precedence(operators.peek())) {
                     processOperation(operators, operands);
@@ -54,7 +57,6 @@ public class Functions {
                 double result = evaluateFunction(fun, argument);
                 operands.push(result);
 
-                // Update the index to skip the function name in the next iteration
 
             }
         }
