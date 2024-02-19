@@ -10,8 +10,16 @@ public class Main {
 
         JFrame frame=new JFrame("Calculator");
         frame.setLayout(new BorderLayout());
-        frame.setSize(460,400);
+        frame.setSize(460,420);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JMenuBar menuBar=new JMenuBar();
+        JMenu file=new JMenu("File");
+        JMenu description=new JMenu("description");
+        menuBar.add(file);
+        menuBar.add(description);
+
+        frame.setJMenuBar(menuBar);
 
         JPanel clickables=new JPanel();
         clickables.setLayout(new BorderLayout());
@@ -76,7 +84,8 @@ public class Main {
 
                 if(printable.equals("=")==true)
                 {
-                    Functions.getResult(display.getText());
+                   double result= Functions.getResult(display.getText());
+                   display.setText(String.valueOf(result));
                 } else if (printable.equals("AC")==true) {
                     display.setText(" ");
 

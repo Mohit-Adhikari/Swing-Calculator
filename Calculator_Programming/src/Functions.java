@@ -174,10 +174,11 @@ public class Functions {
         return Math.toDegrees(radians);
     }
 
-    public static void getResult(String infixExpression) {
+    public static double getResult(String infixExpression) {
         double result = evaluateInfix(infixExpression);
 
         System.out.println("Infix Expression: " + infixExpression);
         System.out.println("Result after evaluation: " + result);
+        return result;
     }
 }
