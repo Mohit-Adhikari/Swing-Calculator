@@ -2,11 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
 
 public class Main {
     public static JTextField display;
 
     public static void main(String[] args) {
+
 
         JFrame frame=new JFrame("Calculator");
         frame.setLayout(new BorderLayout());
@@ -16,10 +19,17 @@ public class Main {
         JMenuBar menuBar=new JMenuBar();
         JMenu file=new JMenu("File");
         JMenu description=new JMenu("description");
+        JMenuItem history=new JMenuItem("History");
+        JMenuItem credits=new JMenuItem("Credits");
+
+        file.add(history);
+        file.add(credits);
+
         menuBar.add(file);
         menuBar.add(description);
 
         frame.setJMenuBar(menuBar);
+
 
         JPanel clickables=new JPanel();
         clickables.setLayout(new BorderLayout());
@@ -84,8 +94,11 @@ public class Main {
 
                 if(printable.equals("=")==true)
                 {
+                    fileSave save=new fileSave();
+                    save.openWrite(display.getText());
                    double result= Functions.getResult(display.getText());
                    display.setText(String.valueOf(result));
+
                 } else if (printable.equals("AC")==true) {
                     display.setText(" ");
 
