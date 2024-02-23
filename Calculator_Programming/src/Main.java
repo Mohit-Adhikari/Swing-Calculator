@@ -5,7 +5,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.*;
-
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.io.*;
 public class Main {
     public static JTextField display;
 
@@ -149,23 +151,37 @@ public class Main {
             FileReader reader = new FileReader(historyFile);
             BufferedReader bufferedReader = new BufferedReader(reader);
 
-            String lastLine = null;
+            StringBuilder historyContent = new StringBuilder();
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                lastLine = line;
-            }
-
-            if (lastLine != null) {
-                display.setText(lastLine);
-            } else {
-                display.setText("History is empty.");
+                historyContent.append(line).append(System.lineSeparator());
             }
 
             bufferedReader.close();
             reader.close();
+
+            String lastLine = null;
+            String[] lines = historyContent.toString().split(System.lineSeparator());
+
+            if (lines.length > 0) {
+                lastLine = lines[lines.length - 1];
+                // Remove the last line from historyContent
+                historyContent.delete(historyContent.length() - lastLine.length() - System.lineSeparator().length(), historyContent.length());
+            }
+
+            if (lastLine != null) {
+                display.setText(lastLine);
+
+                // Write the updated history back to the file
+                Files.write(Paths.get("history.txt"), historyContent.toString().getBytes());
+            } else {
+                display.setText("History is empty.");
+            }
+
         } catch (IOException e) {
             // Handle file access errors gracefully
             display.setText("Error reading history: " + e.getMessage());
         }
     }
+
 }
