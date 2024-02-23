@@ -2,8 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileWriter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.*;
 
 public class Main {
     public static JTextField display;
@@ -29,6 +30,17 @@ public class Main {
         menuBar.add(description);
 
         frame.setJMenuBar(menuBar);
+        history.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Desktop.getDesktop().open(new File("history.txt"));
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(frame, "Error opening history file: " + ex.getMessage(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
 
         JPanel clickables=new JPanel();
@@ -66,6 +78,22 @@ public class Main {
         Font text=new Font("Ariel",Font.PLAIN,20);
         display.setFont(text);
         screen.add(display);
+        display.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_UP) {
+                    showLastHistoryLine();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
 
 
 
@@ -109,5 +137,35 @@ public class Main {
 
 
 
+    }
+    public static void showLastHistoryLine() {
+        try {
+            File historyFile = new File("history.txt");
+            if (!historyFile.exists()) {
+                // Create history file if it doesn't exist
+                historyFile.createNewFile();
+            }
+
+            FileReader reader = new FileReader(historyFile);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+
+            String lastLine = null;
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                lastLine = line;
+            }
+
+            if (lastLine != null) {
+                display.setText(lastLine);
+            } else {
+                display.setText("History is empty.");
+            }
+
+            bufferedReader.close();
+            reader.close();
+        } catch (IOException e) {
+            // Handle file access errors gracefully
+            display.setText("Error reading history: " + e.getMessage());
+        }
     }
 }
